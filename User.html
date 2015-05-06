@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to Ext JS!</title>
+	<script type="text/javascript" src="../extjs-4.1.1/ext-all.js"></script>
+	<link rel="stylesheet" type="text/css" href="../extjs-4.1.1/resources/css/ext-all.css">
+	<script type ="text/javascript">
+
+	Ext.application({
+		name   : 'MyApp',
+
+		launch : function() {
+
+			Ext.define('User', {
+				extend: 'Ext.data.Model',
+				fields: [
+				{name: 'name',  type: 'string'},
+				{name: 'age',   type: 'int', convert: null}
+				],
+				changeName: function(newName) {
+					this.set('name', newName);
+				}
+			});
+
+			var user = Ext.create('User', {
+				id   : 'ABCD12345',
+				name : 'Conan',
+				age  : 24
+			});
+
+			Ext.create('Ext.container.Viewport', {
+				layout: 'fit',
+				items: [
+				{
+					title: 'Hello ' + user.get('name'),
+					html : 'Hello ' + user.get('name') + ', your are ' + user.get('age') + ' years old'
+				}
+				]
+			});
+
+		}
+	});
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
