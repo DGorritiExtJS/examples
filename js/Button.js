@@ -1,3 +1,4 @@
+var user, button;
 
 Ext.application({
 	name   : 'MyApp',
@@ -5,8 +6,8 @@ Ext.application({
 	launch : function() {
 
 		defineUser();
-		var user = createUser('David',26);
-		var button = createButton();
+		user = createUser('David',26);
+		button = createButton();
 
 	}
 
@@ -36,15 +37,15 @@ function createUser(name,age){
 function createButton(){
 
 	var button = Ext.create('Ext.Button',{
-			text: 'Change Name',
+			text: 'Show name',
 			renderTo: Ext.getBody(),
-			handler: changeName
+			handler: showName
 		});
 
 	return button;
 
 }
 
-function changeName(){
-	alert('Name changed');
+function showName(){
+	alert(user.get('name'));
 }
