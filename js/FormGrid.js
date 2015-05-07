@@ -1,5 +1,6 @@
 var users = [];
 var usersArrayStore;
+var userID = 0;
 
 Ext.application({
 	name   : 'MyApp',
@@ -19,8 +20,10 @@ Ext.application({
 
 function loadDefaultUsers(){
 
-	var user = createUser('David',26,'email@hotmail.com');
-	users.push(user);
+	for (i = 0; i < 10; i++){
+		var user = createUser('David' + i,26 + i,'email@hotmail.com');
+		user.save();
+	};
 
 }
 
@@ -28,18 +31,24 @@ function defineUser(){
 	Ext.define('User', {
 		extend: 'Ext.data.Model',
 		fields: [
+		{name: 'id', type: 'int'},
 		{name: 'name',  type: 'string'},
 		{name: 'age',   type: 'int', convert: null},
 		{name: 'email', type: 'string'}
 		],
 		changeName: function(newName) {
 			this.set('name', newName);
+		},
+		save: function(){
+			users.push(this);
 		}
 	});
 };
 
 function createUser(name,age,email){
+	userID++;
 	var user = Ext.create('User', {
+		id   : userID,
 		name : name,
 		age  : age,
 		email: email
@@ -51,7 +60,7 @@ function createPanel(){
 
 	var panel = Ext.create('Ext.form.Panel', {
 		title: 'Contact Info',
-		width: 300,
+		width: 350,
 		bodyPadding: 10,
 		renderTo: Ext.getBody(),
 		items: [
@@ -78,7 +87,7 @@ function createPanel(){
         vtype: 'email',  // requires value to be a valid email address format
         allowBlank: false
     }, 
-    createButton(),
+    createSaveButton(),
     createGrid()
     ]
 });
@@ -88,19 +97,19 @@ function createPanel(){
 }
 
 function saveInfo(){
+
 	var name = Ext.getCmp('nameTextField').getValue();
 	var age = Ext.getCmp('ageTextField').getValue();
 	var email = Ext.getCmp('emailTextField').getValue();
 
 	var user = createUser(name,age,email);
-	users.push(user);
+	user.save();
 
 	usersArrayStore.reload();
 
-	//showUsersInfo();
 }
 
-function createButton(){
+function createSaveButton(){
 
 	var button = Ext.create('Ext.Button',{
 		text: 'Save info',
@@ -110,6 +119,37 @@ function createButton(){
 
 	return button;
 
+}
+
+function createDeleteButton(){
+
+	var button = Ext.create('Ext.Button',{
+		text: 'Delete Selection',
+		handler: deleteSelection
+	});
+
+	return button;
+
+}
+
+function deleteSelection(grid, rowIndex, colIndex){
+
+	var rec = grid.getStore().getAt(rowIndex);
+    var id = rec.get('id');
+    //var index = arrayObjectIndexOf(id);
+    //alert(index);
+    //BOTH ARE WORKING
+	//grid.getStore().remove(rec);
+	grid.getStore().removeAt(rowIndex);
+	//alert("Delete " + rec.get('name'));
+
+}
+
+function arrayObjectIndexOf(searchTerm) {
+    for(var i = 0; i < myArray.length; i++) {
+        if (users[i].get('id') === searchTerm) return i;
+    }
+    return -1;
 }
 
 function showUsersInfo(){
@@ -158,6 +198,13 @@ function createGrid(){
 		},
 		columns: [
 		{
+			text     : 'ID',
+			sortable : 30,
+			sortable : true,
+			dataIndex: 'id',
+			flex: 1
+		},
+		{
 			text     : 'Name',
 			sortable : true,
 			dataIndex: 'name',
@@ -174,9 +221,18 @@ function createGrid(){
 			width    : 140,
 			sortable : true,
 			dataIndex: 'email'
-		}]
-	});
+		},{
+			xtype:'actioncolumn', 
+			width: 15,
+			tdCls:'delete',
+			items: [{
+                icon: 'http://www.sanwebe.com/assets/ajax-add-delete-record/images/icon_del.gif',  // Use a URL in the icon config
+                tooltip: 'Delete',
+                handler: deleteSelection
+            }]
+        }]
+    });
 
-	return usersGrid;
+return usersGrid;
 
 }
