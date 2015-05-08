@@ -182,7 +182,7 @@ function createNewButton(){
 function createSaveButton(){
 
 	var button = Ext.create('Ext.Button',{
-		text: 'Save info',
+		text: 'Save User',
 		handler: saveInfo,
 		formBind: true
 	});
@@ -203,17 +203,24 @@ function newUser(){
 function deleteSelection(grid, rowIndex, colIndex){
 
 	var rec = grid.getStore().getAt(rowIndex);
-	var id = rec.get('id');
-	var index = arrayObjectIndexOf(id)
-	if (index > -1){
-		users.splice(index,1);
-	};
+	var name = rec.get('name');
+
+	Ext.MessageBox.confirm('Confirm', 'Are you sure you want to delete ' + name + '?', 
+		function(btn){
+			if(btn ==='yes'){
+				var id = rec.get('id');
+				var index = arrayObjectIndexOf(id)
+				if (index > -1){
+					users.splice(index,1);
+				};
 
     //ALL ARE WORKING
     usersArrayStore.reload();
 	//grid.getStore().remove(rec);
 	//grid.getStore().removeAt(rowIndex);
 	resetForm();
+}
+});
 
 }
 
