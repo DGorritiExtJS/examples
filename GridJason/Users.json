@@ -1,0 +1,27 @@
+/*{
+	"total": 4,
+	"success": true,
+	"data":*/
+	[
+		{
+			"name"	: "David",
+			"age"	: 26,
+			"email": "david@gmail.com"
+		},
+		{
+			"name"	: "Ales",
+			"age"	: 24,
+			"email": "ales@gmail.com"
+		},
+		{
+			"name"	: "Ibon",
+			"age"	: 20,
+			"email": "ibon@gmail.com"
+		},
+		{
+			"name"	: "Unai",
+			"age"	: 25,
+			"email": "unai@gmail.com"
+		}
+	]
+//}
