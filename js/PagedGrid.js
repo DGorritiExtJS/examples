@@ -1,4 +1,4 @@
-var usersStore, itemsPerPage = 3, pager, grid, win;
+var usersStore, itemsPerPage = 3, pager, grid, win, textField;
 
 enableLoader();
 
@@ -6,6 +6,10 @@ Ext.application({
 	name   : 'MyApp',
 
 	launch : function() {
+
+		textField = Ext.create('Ext.grid.plugin.CellEditing', {
+			clicksToEdit: 1
+		});
 
 		defineUser();
 		createStore();
@@ -46,12 +50,25 @@ function createGrid(){
 		store: usersStore,
 		columns: [
 		new Ext.grid.RowNumberer(),
-		{text:'First Name', dataIndex:'firstName'},
-		{text:'Last Name', dataIndex:'lastName'}
+		{
+			text:'First Name', 
+			dataIndex:'firstName', 
+			sortable: true,
+			editor:{
+				allowBlank : false
+			}
+		},
+		{
+			text:'Last Name', 
+			dataIndex:'lastName', 
+			sortable: true,
+			editor:{}
+		}
 		],
 		border: false,
 		stripeRows: true,
-		bbar: pager
+		bbar: pager//,
+		//plugins: [textField]
 	});
 
 };
